@@ -1,0 +1,24 @@
+.label{
+  font-size: 18px;
+  font-weight: 700;
+  float: left;
+  margin: 10px 5px;
+}
+.setup-btn{
+  background: #4540DB;
+border-radius: 8px;
+border: none;
+color: #fff;
+padding: 10px 20px;
+font-size: 18px;
+margin: 10px;
+float: right;
+}
+
+@media screen and (max-width: 768px){
+  .setup-btn{
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+}

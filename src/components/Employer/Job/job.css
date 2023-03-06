@@ -1,0 +1,39 @@
+.sidebar-card{
+  border-bottom: 1px solid #0000001f;
+  margin: 10px;
+  padding: 5px;
+  text-align: left;
+  row-gap: 5px;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-card-selected{
+  border-left: 3px solid #4540DB;
+    border-radius: 10px;
+    background: #F2F2F2;
+}
+
+.sidebar-card h6{
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(8px, 0.8vw, 12px);
+  line-height: 14px;
+  color: #959595;
+  margin: 0px;
+}
+.sidebar-card h1{
+  font-style: normal;
+font-weight: 500;
+font-size: clamp(14px, 1.4vw, 22px);
+line-height: clamp(16px, 1.5vw, 26px);
+
+color: #000000;
+margin: 1px;
+}
+.sidebar-card h4{
+  font-weight: 500;
+font-size: clamp(12px, 1vw, 16px);
+line-height: 19px;
+margin: 0px;
+color: #959595;
+}

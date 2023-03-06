@@ -47,14 +47,14 @@ const reducer = (state, action) => {
 };
 
 export const UserContextProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialValues);
+  const [userState, dispatch] = useReducer(reducer, initialValues);
 
   useEffect(() => {
-    console.log("user context", state);
-  }, [state]);
+    console.log("user context", userState);
+  }, [userState]);
 
   return (
-    <userContext.Provider value={[state, dispatch]}>
+    <userContext.Provider value={[userState, dispatch]}>
       {children}
     </userContext.Provider>
   );
