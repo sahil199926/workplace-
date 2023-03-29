@@ -1,8 +1,11 @@
+import moment from "moment";
 import React from "react";
-
-function Sidebar({ allLastmessages, userType,onSelect }) {
+import './conversation.css';
+function Sidebar({ allLastmessages, userType,onSelect,selectedMessage }) {
   return (
-    <div>
+    <div
+    className="sidebar-container"
+    >
       {allLastmessages && allLastmessages.length == 0 ? (
         <div>No messages</div>
       ) : allLastmessages && allLastmessages.length > 0 ? (
@@ -10,14 +13,16 @@ function Sidebar({ allLastmessages, userType,onSelect }) {
           {allLastmessages.map((message) => {
             return (
               <div 
+              className={`message ${selectedMessage&&selectedMessage.lastMessageId===message.lastMessageId&&"select-message"}`}
               onClick={() => onSelect(message)}
               >
-                <div>
+                <h6>
                   {userType === "employer"
                     ? message["candidateName"]
                     : message["companyName"]}
-                </div>
-                <div>{message.lastMessage}</div>
+                    <div>{moment(message.createdAt).format('LT')}</div>
+                </h6>
+                <p>{message.lastMessage}</p>
               </div>
             );
           })}
