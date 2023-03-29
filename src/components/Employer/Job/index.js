@@ -7,6 +7,7 @@ function Job() {
   const [selectedJob, setSelectedJob] = React.useState(null)
   const postAjob = () => {
     setShowSidebar(!showSidebar);
+    setSelectedJob(null)
   }
   const selectThisJob = (job) => {
     setSelectedJob(job)
@@ -16,6 +17,8 @@ function Job() {
       <Grid
         sx={{
           display: { xs: showSidebar ? "block" : "none", sm: "block" },
+          margin: '10px 0px',
+          padding: '0px 10px'
         }}
         item
         xs={12}
@@ -31,7 +34,7 @@ function Job() {
         xs={12}
         sm={9}
       >
-        <Jobform postAjob={postAjob}  />
+        <Jobform selectedJob={selectedJob} postAjob={postAjob}  />
       </Grid>
     </Grid>
   );

@@ -8,41 +8,44 @@ import { useContext } from "react";
 import { userContext } from "../../context/userContext";
 import "./auth.css";
 import { useNavigate } from "react-router-dom";
-
+import { doc, getDoc } from "firebase/firestore";
+import {db} from '../../firebaseConfig'
+import toastMessage from "../../utils/toastMessage";
 function Auth({ type }) {
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   const [state, dispatch] = useContext(userContext);
 
-  const redirectUser = () => {
+  const redirectUser = async(email) => {
+    // with email we can check if user exist or not from users collection
+    const doc_ref=doc(db,"userInfo",email)
+    const userdata= await getDoc(doc_ref)
+    let userExist=null
+    if(userdata.exists()){
+      userExist=userdata.data()
+    }
+
     if (
       // user exists
-      false
+      userExist
     ) {
       if (
-        // user exist as candidate but trying to login as employer
-        false
+       // if userType in db is equal to the type of auth component
+        userExist.userType===type
       ) {
-        //alert user he exist as candidate
-      } else if (
-        // user exist as employer but trying to login as candidate
-        false
-      ) {
-        //alert user he exist as employer
-      } else if (
-        // user exist as candidate and trying to login as candidate
-        true
-      ) {
-        // redirect to candidate profile
-        navigate("/candidate/profile");
-      } else if (
-        // user exist as employer and trying to login as employer
-        true
-      ) {
-        // redirect to employer profile
-        navigate("/employer/profile");
+        dispatch({
+          type: "ADDUSERINFO",
+          payload: userExist,
+        });
+        navigate(`/${type}/profile`);
+        
+      } 
+      else{
+        // if userType in db is not equal to the type of auth component
+        toastMessage('error',`you are not ${type} please login with ${type} account`,'danger')
       }
-    } else {
+    }
+     else {
       // user doesn't exist
       if (type === "candidate") {
         // redirect to candidate onboarding
@@ -75,7 +78,7 @@ function Auth({ type }) {
             uid,
           },
         });
-        redirectUser();
+        redirectUser(email);
         // ...
       })
       .catch((error) => {

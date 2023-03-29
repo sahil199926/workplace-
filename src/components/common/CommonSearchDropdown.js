@@ -13,7 +13,9 @@ function CommonSearchDropdown({ options, onChange, values, onDelete }) {
         size="small"
         options={options}
         fullWidth
-        renderInput={(params) => <TextField {...params} />}
+        renderInput={(params) => <TextField
+          value={values}
+          {...params} />}
       />
       <div
         style={{

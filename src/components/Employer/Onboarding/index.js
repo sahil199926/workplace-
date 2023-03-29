@@ -16,7 +16,7 @@ function Onboarding() {
     companyName: "",
     industryType: "",
     companySize: "",
-    companyEmail: "",
+    companyEmail: userState.user.email,
     name: "",
     role: "",
     companyTagline: "",
@@ -98,6 +98,7 @@ function Onboarding() {
           <label className="label">Company Email</label>
           <TextField
             size="small"
+            disabled
             value={state.companyEmail}
             onChange={(e) =>
               setState({ ...state, companyEmail: e.target.value })

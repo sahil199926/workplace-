@@ -1,5 +1,11 @@
-import React ,{useContext} from "react";
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import React, { useContext } from "react";
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from "react-router-dom";
 import Auth from "../components/Auth";
 import Onboarding from "../components/Candidate/Onboarding";
 import Profile from "../components/Candidate/Profile";
@@ -13,53 +19,61 @@ import EmployerJob from "../components/Employer/Job";
 import EmployerApplicants from "../components/Employer/Applicants";
 import EmployerConversation from "../components/Employer/Conversation";
 import Landingpage from "../components/LandingPage";
-import {userContext} from "../context/userContext"
+import { userContext } from "../context/userContext";
+import EmployerHoc from "../hoc/EmployerHoc";
+import CandidateHoc from "../hoc/CandidateHoc";
 function Navs() {
-  const [state,dipatch]=useContext(userContext)
+  const [state, dipatch] = useContext(userContext);
   const CandidateProtected = () => {
-    const isAuth=state.isAuth
+    const isAuth = state.isAuth;
     if (isAuth) {
-      return <Outlet/>
+      return (
+        <CandidateHoc>
+          <Outlet />
+        </CandidateHoc>
+      );
+    } else {
+      return <Navigate to="/candidate/auth" />;
     }
-    else{
-      return <Navigate to="/candidate/auth" />
-    }
-  }
+  };
 
   const EmployerProtected = () => {
-    const isAuth=state.isAuth
+    const isAuth = state.isAuth;
     if (isAuth) {
-      return <Outlet/>
+      return (
+        <EmployerHoc>
+          <Outlet />
+        </EmployerHoc>
+      );
+    } else {
+      return <Navigate to="/employer/auth" />;
     }
-    else{
-      return <Navigate to="/employer/auth" />
-    }
-  }
+  };
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Landingpage />} />
-        <Route path="/candidate/auth" element={<Auth type={'candidate'} />} />
-
+        <Route path="/candidate/auth" element={<Auth type={"candidate"} />} />
+  <Route path="/candidate/onboarding" element={<Onboarding />} />
         <Route element={<CandidateProtected />}>
-
-          <Route path="/candidate/onboarding" element={<Onboarding />} />
+        
           <Route path="/candidate/profile" element={<Profile />} />
           <Route path="/candidate/jobs" element={<Jobs />} />
           <Route path="/candidate/applications" element={<Applications />} />
           <Route path="/candidate/Conversation" element={<Conversation />} />
         </Route>
 
-        <Route path="/employer/auth" element={<Auth type={'employer'} />} />
-        <Route element={<EmployerProtected />}>
+        <Route path="/employer/auth" element={<Auth type={"employer"} />} />
         <Route path="/employer/onboarding" element={<EmployerOnboarding />} />
-        <Route path="/employer/profile" element={<EmployerProfile />} />
-        <Route path="/employer/job" element={<EmployerJob />} />
-        <Route path="/employer/applicants" element={<EmployerApplicants />} />
-        <Route
-          path="/employer/Conversation"
-          element={<EmployerConversation />}
-        />
+        <Route element={<EmployerProtected />}>
+          
+          <Route path="/employer/profile" element={<EmployerProfile />} />
+          <Route path="/employer/job" element={<EmployerJob />} />
+          <Route path="/employer/applicants" element={<EmployerApplicants />} />
+          <Route
+            path="/employer/Conversation"
+            element={<EmployerConversation />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>

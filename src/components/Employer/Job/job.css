@@ -37,3 +37,26 @@ line-height: 19px;
 margin: 0px;
 color: #959595;
 }
+.post-job-btn{
+  border: 1.5px solid #8585A0;
+filter: drop-shadow(0px 4px 8px rgba(0, 0, 0, 0.2));
+border-radius: 19px;
+background: none;
+display: flex;
+flex-direction: column;
+align-items: center;
+height: 95px;
+justify-content: center;
+margin: auto;
+cursor: pointer;
+}
+
+.post-job-btn> div{ font-weight: 600; font-size: 28px; line-height: 34px; color: #393939; }
+.post-job-btn >p{
+  font-weight: 500;
+font-size: 15px;
+line-height: 18px;
+
+color: #8C8C8C;
+
+}

@@ -1,14 +1,19 @@
 import { Button, Grid, TextField } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import CommonSearchDropdown from "../../common/CommonSearchDropdown";
-import CommonDropdown from "../../common/CommonSearchDropdown";
-import { primary_role,currency,experience,jobType } from "../../../constants";
-import {v4 as uuidv4} from 'uuid'
-import {userContext} from '../../../context/userContext'
+import CommonDropdown from "../../common/CommonDropdown";
+import {
+  primary_role,
+  currency,
+  experience,
+  jobType,
+} from "../../../constants";
+import { v4 as uuidv4 } from "uuid";
+import { userContext } from "../../../context/userContext";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
-import toastMessage from '../../../utils/toastMessage'
-function Jobform({ postAjob }) {
+import toastMessage from "../../../utils/toastMessage";
+function Jobform({ postAjob, selectedJob }) {
   const [userState, dispatch] = React.useContext(userContext);
   const [jobdata, setJobdata] = React.useState({
     jopType: "",
@@ -24,30 +29,52 @@ function Jobform({ postAjob }) {
     },
     skills: [],
   });
-  const submit = async(e) => {
+
+  useEffect(() => {
+    if (selectedJob) {
+      setJobdata(selectedJob);
+    } else {
+      setJobdata({
+        jopType: "",
+        jobTitle: "",
+        jobLocation: "",
+        jobDescription: "",
+        primary_role: "",
+        experience: "",
+        salary: {
+          min: "",
+          max: "",
+          currency: "",
+        },
+        skills: [],
+      });
+    }
+  }, [selectedJob]);
+  const submit = async (e) => {
     e.preventDefault();
     console.log(jobdata);
 
     // call firebase jobs collection and add jobdata
-    const jobId=uuidv4();
-    try{
-    setDoc(
-      doc(db, "jobs", jobId),
-      {
+    const jobId = jobdata.jobId ? jobdata.jobId : uuidv4();
+    try {
+      setDoc(doc(db, "jobs", jobId), {
         ...jobdata,
         jobId,
         createdAt: new Date(),
-        companyName:userState.userInfo.companyName,
-        employerId:userState.userInfo.companyEmail,
-        companyLogo:userState.userInfo.companyLogo,
-        companytagline:userState.userInfo.companyTagline,
-        companySize:userState.userInfo.companySize,
+        companyName: userState.userInfo.companyName,
+        employerId: userState.userInfo.companyEmail,
+        companyLogo: userState.userInfo.companyLogo,
+        companytagline: userState.userInfo.companyTagline,
+        companySize: userState.userInfo.companySize,
+      });
+      if(jobdata.jobId){
+        toastMessage("Job Updated Successfully", "success");
       }
-    )
-    toastMessage("Job Posted Successfully", "success");
-    }
-    catch(err){
-      console.log(err)
+      else{
+      toastMessage("Job Posted Successfully", "success");
+      }
+    } catch (err) {
+      console.log(err);
       toastMessage("Something went wrong", "error");
     }
   };
@@ -98,7 +125,6 @@ function Jobform({ postAjob }) {
           <Grid item xs={12} md={6}>
             <label className="label">jobTitle</label>
             <TextField
-            
               size="small"
               value={jobdata.jobTitle}
               onChange={(e) =>
@@ -152,9 +178,7 @@ function Jobform({ postAjob }) {
 
           <Grid item xs={12} md={6}>
             <label className="label">Salary</label>
-            <Grid container
-            columnSpacing={2}
-            >
+            <Grid container columnSpacing={2}>
               <Grid item xs={4}>
                 <CommonDropdown
                   value={jobdata.salary.currency}
@@ -170,7 +194,6 @@ function Jobform({ postAjob }) {
               <Grid item xs={4}>
                 <TextField
                   size="small"
-                
                   multiline
                   value={jobdata.salary.min}
                   onChange={(e) =>
@@ -183,9 +206,8 @@ function Jobform({ postAjob }) {
                 />
               </Grid>
               <Grid item xs={4}>
-              <TextField
+                <TextField
                   size="small"
-                  
                   multiline
                   value={jobdata.salary.max}
                   onChange={(e) =>

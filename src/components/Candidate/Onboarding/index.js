@@ -15,7 +15,7 @@ function Onboarding() {
   const [userState, dispatch] = useContext(userContext);
   const [state, setState] = React.useState({
     name: "",
-    email: "",
+    email: userState.user.email,
     phone: "",
     location: "",
     primary_role: "",
@@ -91,6 +91,7 @@ function Onboarding() {
         <Grid item xs={12} md={6}>
           <label className="label">Email</label>
           <TextField
+          disabled
             size="small"
             value={state.email}
             onChange={(e) =>

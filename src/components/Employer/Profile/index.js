@@ -120,6 +120,7 @@ function Profile() {
         <Grid item xs={12} md={6}>
           <label className="label">Company Email</label>
           <TextField
+            disabled
             size="small"
             value={state.companyEmail}
             onChange={(e) =>

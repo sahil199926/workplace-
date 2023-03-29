@@ -25,7 +25,7 @@ const reducer = (state, action) => {
       };
       localStorage.setItem("user", JSON.stringify(data));
       return data;
-    case "AddUSERINFO":
+    case "ADDUSERINFO":
       data = {
         ...state,
         userInfo: action.payload,

@@ -119,6 +119,7 @@ function Profile() {
           <label className="label">Email</label>
           <TextField
           disabled
+          
             size="small"
             value={state.email}
             onChange={(e) =>
